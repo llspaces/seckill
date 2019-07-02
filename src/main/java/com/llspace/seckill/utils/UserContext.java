@@ -7,7 +7,7 @@ import com.llspace.seckill.entity.User;
  * <p>
  * <p>@description 存储登录用户信息</p>
  *
- * @author liyupeng
+ * @author llspace
  * @version 1.0
  * @since 2019/6/21 16:17
  **/

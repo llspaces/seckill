@@ -7,6 +7,7 @@ import org.springframework.core.Ordered;
 import org.springframework.validation.Validator;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -52,4 +53,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //默认访问页面
         registry.addViewController("/").setViewName("login");
     }
+
 }

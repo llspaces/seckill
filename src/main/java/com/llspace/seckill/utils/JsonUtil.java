@@ -19,21 +19,21 @@ import java.util.*;
 public class JsonUtil {
 
     /**
-     * jsonstring to javabean
+     * json string to java bean
      */
     public static <T> T toBean(String json, Class<T> beanClass){
         return JSONObject.parseObject(json, beanClass);
     }
 
     /**
-     * jsonstring to list
+     * json string to list
      */
     public static <T> List<T> toList(String json, Class<T> beanClass){
         return JSONArray.parseArray(json, beanClass);
     }
 
     /**
-     * javabean to jsonstring
+     * java bean to json string
      */
     public static <T> String toJSONString(T t){
         String json = "";

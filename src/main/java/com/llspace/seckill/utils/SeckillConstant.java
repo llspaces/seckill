@@ -16,5 +16,8 @@ public class SeckillConstant {
     public static final String COOKIE_TOKEN_NAME = "token";
     //md5固定salt
     public static final String MD5_SALT = "1a2b3c4d";
+    //error path
+    public static final String ERROR_PATH = "/error";
+
 
 }

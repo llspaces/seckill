@@ -1,7 +1,6 @@
 package com.llspace.seckill.entity.vo;
 
 import com.llspace.seckill.validator.IsMobile;
-import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +14,6 @@ import javax.validation.constraints.NotNull;
  * @version 1.0
  * @since 2019/6/19 15:53
  **/
-@Data
 public class LoginVO {
     @NotNull
     @IsMobile
@@ -25,8 +23,20 @@ public class LoginVO {
     @Length(min=32)
     private String password;
 
+    public String getMobile() {
+        return mobile;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     @Override
     public String toString() {
-        return "LoginVO [mobile=" + mobile + ", password=" + password + "]";
+        return "LoginVo [mobile=" + mobile + ", password=" + password + "]";
     }
 }

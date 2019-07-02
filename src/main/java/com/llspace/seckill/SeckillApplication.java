@@ -4,6 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tk.mybatis.spring.annotation.MapperScan;
 
+/**
+ * SeckillApplication 系统启动类
+ *
+ * @author llspace
+ * @since  2019/6/17 11:57
+ */
 @SpringBootApplication
 @MapperScan(basePackages = {"com.llspace.seckill.dao"})
 public class SeckillApplication {
