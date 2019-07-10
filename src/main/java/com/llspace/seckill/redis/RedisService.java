@@ -29,7 +29,12 @@ public class RedisService {
         try{
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
             String realKey = prefix.realKey(key);
-            operations.set(realKey, JsonUtil.toJSONString(value));
+            if(value instanceof String){
+                operations.set(realKey, (String) value);
+            }else{
+                operations.set(realKey, JsonUtil.toJSONString(value));
+            }
+
             //expire <= 0 表示无限期, 不设置
             if(prefix.expire() > 0){
                 redisTemplate.expire(realKey, prefix.expire(), TimeUnit.SECONDS);
