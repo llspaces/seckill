@@ -97,4 +97,4 @@ CREATE TABLE `seckill_user` (
 -- ----------------------------
 -- Records of seckill_user
 -- ----------------------------
-INSERT INTO `seckill_user` VALUES ('17001224729', 'llspace', '0e46da2dc126e939ff4c523824cef73d', 'llspace', null, '2019-06-19 17:46:45', '2019-06-19 17:46:51', '1');
+INSERT INTO `seckill_user` VALUES ('18824088666', 'llspace', '0e46da2dc126e939ff4c523824cef73d', 'llspace', null, '2019-06-19 17:46:45', '2019-06-19 17:46:51', '1');

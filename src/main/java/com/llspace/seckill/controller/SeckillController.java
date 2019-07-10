@@ -8,10 +8,13 @@ import com.llspace.seckill.service.GoodsService;
 import com.llspace.seckill.service.SeckillOrderService;
 import com.llspace.seckill.service.SeckillService;
 import com.llspace.seckill.utils.CodeMsg;
+import com.llspace.seckill.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>@filename SeckillController</p>
@@ -35,8 +38,29 @@ public class SeckillController {
     @Autowired
     private SeckillOrderService seckillOrderService;
 
-    @RequestMapping("/do_seckill")
-    public String seckill(Model model, User user, long goodsId){
+    @PostMapping("/do_seckill")
+    @ResponseBody
+    public Result<OrderInfo> seckill(Model model, User user, long goodsId){
+        //判断库存
+        GoodsVO goods = goodsService.findGoodsVOByID(goodsId);
+        int stock = goods.getStockCount();
+        if(stock <= 0){
+            //秒杀失败
+            return Result.error(CodeMsg.SECKILL_OVER);
+        }
+        //判断是否已经秒杀到
+        SeckillOrder seckillOrder = seckillOrderService.findSeckillOrder(user.getId(), goodsId);
+        if(seckillOrder !=null){
+            //重复秒杀
+            return Result.error(CodeMsg.REPEATE_SECKILL);
+        }
+        //减库存，下订单，存入秒杀订单
+        OrderInfo order = seckillService.seckill(user, goods);
+        return Result.success(order);
+    }
+
+    @RequestMapping("/do_seckill1")
+    public String seckill1(Model model, User user, long goodsId){
         model.addAttribute("user", user);
         if(user == null){
             return "login";

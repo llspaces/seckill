@@ -97,6 +97,7 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/detail/{goodsId}")
+    @ResponseBody
     public Result<GoodsDetailVO> detail(Model model,User user,@PathVariable("goodsId")long goodsId){
         log.info("goodsId : " + goodsId);
         GoodsVO goodsVO = goodsService.findGoodsVOByID(goodsId);
