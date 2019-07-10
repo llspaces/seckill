@@ -99,6 +99,55 @@ public class UserService {
     }
 
     /**
+     * 通过id获取User信息（对象缓存）
+     *
+     * @param id
+     * @return
+     */
+    public User getById(long id) {
+        //取缓存
+        User user = redisService.getBean(UserRedisKeyPrefix.getById, ""+id, User.class);
+        if(user != null) {
+            return user;
+        }
+        //取数据库
+        user = userMapper.selectByPrimaryKey(id);
+        if(user != null) {
+            redisService.set(UserRedisKeyPrefix.getById, ""+id, user);
+        }
+        return user;
+    }
+
+    /**
+     * 更新用户密码（先更新数据库，在清空缓存）
+     *
+     * @param token
+     * @param id
+     * @param formPass
+     * @return
+     */
+    //Cache Aside Pattern : http://blog.csdn.net/tTU1EvLDeLFq5btqiK/article/details/78693323
+    public boolean updatePassword(String token, long id, String formPass) {
+        //取user
+        User user = getById(id);
+        if(user == null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+
+        //更新数据库
+        User toBeUpdate = new User();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
+        userMapper.updateByPrimaryKey(toBeUpdate);
+
+        //处理缓存
+        redisService.delete(UserRedisKeyPrefix.getById, ""+id);
+        user.setPassword(toBeUpdate.getPassword());
+        redisService.set(UserRedisKeyPrefix.token, token, user);
+        return true;
+    }
+
+    /**
      * 登出功能，删除redis对应key的user
      *
      * @param token

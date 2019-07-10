@@ -21,4 +21,6 @@ public class UserRedisKeyPrefix extends BaseRedisKeyPrefix {
 
     public static UserRedisKeyPrefix selectByPrimaryKey = new UserRedisKeyPrefix(0, "id");
 
+    public static UserRedisKeyPrefix getById = new UserRedisKeyPrefix(0, "id");
+
 }
