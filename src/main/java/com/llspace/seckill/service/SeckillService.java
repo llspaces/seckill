@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeckillService {
 
     @Autowired
-    private GoodsService goodsService;
+    private SeckillGoodsService seckillGoodsService;
 
     @Autowired
     private OrderService orderService;
@@ -30,8 +30,16 @@ public class SeckillService {
     @Transactional
     public OrderInfo seckill(User user, GoodsVO goods) {
         //减库存
-        goodsService.reduceStock(goods);
-        //下订单
-        return orderService.createOrder(user, goods);
+        boolean success = seckillGoodsService.reduceStock(goods.getId());
+        if(success){
+            //下订单
+            return orderService.createOrder(user, goods);
+        }else {
+            //秒杀结束
+            return null;
+        }
+
+
+
     }
 }

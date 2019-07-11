@@ -1,11 +1,11 @@
 package com.llspace.seckill.service;
 
-import com.llspace.seckill.dao.GoodsMapper;
-import com.llspace.seckill.entity.Goods;
+import com.llspace.seckill.dao.SeckillGoodsMapper;
+import com.llspace.seckill.entity.SeckillGoods;
 import com.llspace.seckill.entity.vo.GoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * <p>@filename GoodsService</p>
@@ -17,17 +17,13 @@ import java.util.List;
  * @since 2019/6/27 18:08
  **/
 @Service
-public class GoodsService {
+public class SeckillGoodsService {
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private SeckillGoodsMapper seckillGoodsMapper;
 
-    public List<GoodsVO> listGoodsVO(){
-        return goodsMapper.listGoodsVO();
+    public boolean reduceStock(long goodsId) {
+        int ret = seckillGoodsMapper.reduceStock(goodsId);
+        return ret > 0;
     }
-
-    public GoodsVO findGoodsVOByID(long goodsId) {
-        return goodsMapper.findGoodsVOByID(goodsId);
-    }
-
 }

@@ -46,13 +46,13 @@ public class GoodsController {
     @Autowired
     private ThymeleafViewResolver thymeleafViewResolver;
 
-    @RequestMapping("/list1")
+    /*@RequestMapping("/list1")
     public String list1(HttpServletRequest request, HttpServletResponse response, Model model,User user){
         model.addAttribute("user", user);
         List<GoodsVO> goodsList = goodsService.listGoodsVO();
         model.addAttribute("goodsList", goodsList);
         return "goods_list";
-    }
+    }*/
 
     /**
      * 商品列表优化（页面缓存）

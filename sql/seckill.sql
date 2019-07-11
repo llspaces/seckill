@@ -71,7 +71,8 @@ CREATE TABLE `seckill_order` (
   `user_id` bigint(11) DEFAULT NULL COMMENT '用户ID',
   `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
   `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_uid_gid` (`user_id`,`goods_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

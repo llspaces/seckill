@@ -11,7 +11,7 @@ package com.llspace.seckill.utils;
  **/
 public class SeckillConstant {
     //系统token有效期 60分钟
-    public static final int TOKEN_EXPIRE = 3600;
+    public static final int TOKEN_EXPIRE = 36000;
     //cookie中token name
     public static final String COOKIE_TOKEN_NAME = "token";
     //md5固定salt
