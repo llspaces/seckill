@@ -5,6 +5,8 @@ import com.llspace.seckill.entity.OrderInfo;
 import com.llspace.seckill.entity.SeckillOrder;
 import com.llspace.seckill.entity.User;
 import com.llspace.seckill.entity.vo.GoodsVO;
+import com.llspace.seckill.redis.RedisService;
+import com.llspace.seckill.redis.SeckillOrderRedisKeyPrefix;
 import com.llspace.seckill.utils.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,14 @@ public class OrderService {
     private SeckillOrderService seckillOrderService;
 
     @Autowired
+    private RedisService redisService;
+
+    @Autowired
     private OrderMapper orderMapper;
+
+    public OrderInfo getOrderById(long orderId) {
+        return orderMapper.selectByPrimaryKey(orderId);
+    }
 
     //创建订单，同时存入秒杀订单表
     @Transactional
@@ -54,6 +63,8 @@ public class OrderService {
         seckillOrder.setOrderId(order.getId());
         log.info(seckillOrder.toString());
         seckillOrderService.insert(seckillOrder);
+
+        redisService.set(SeckillOrderRedisKeyPrefix.getSeckillOrderByUidGid, "_" + seckillOrder.getUserId() + "_" + seckillOrder.getGoodsId(), seckillOrder);
 
         return order;
     }
