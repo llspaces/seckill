@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>@filename SeckillController</p>
@@ -46,6 +48,8 @@ public class SeckillController implements InitializingBean{
     @Autowired
     private SeckillService seckillService;
 
+    private Map<Long,Boolean> seckillOverMap = new HashMap<>();
+
     @Autowired
     private SeckillOrderService seckillOrderService;
 
@@ -55,19 +59,29 @@ public class SeckillController implements InitializingBean{
     @PostMapping("/do_seckill")
     @ResponseBody
     public Result<Integer> seckill(Model model, User user, long goodsId){
-        //系统初始化时秒杀商品库存已初始化至redis
+        //系统初始化时秒杀商品库存已初始化至redis（implements InitializingBean Override afterPropertiesSet()）
+
+        //内存标记，减少redis访问
+        if(seckillOverMap.get(goodsId)){
+            //商品已经秒杀完
+            return Result.error(CodeMsg.SECKILL_OVER);
+        }
+
         //redis预减库存
         long stock = redisService.decr(GoodsRedisKeyPrefix.getSeckillGoodsStock, "" + goodsId);
         if(stock <= 0){
-            //秒杀失败
+            //商品已经秒杀完
+            seckillOverMap.put(goodsId, true);
             return Result.error(CodeMsg.SECKILL_OVER);
         }
+
         //判断是否已经秒杀到
         SeckillOrder seckillOrder = seckillOrderService.findSeckillOrder(user.getId(), goodsId);
         if(seckillOrder !=null){
             //重复秒杀
             return Result.error(CodeMsg.REPEATE_SECKILL);
         }
+
         //入队列rabbitmq
         SeckillMessage seckillMessage = new SeckillMessage();
         seckillMessage.setGoodsId(goodsId);
