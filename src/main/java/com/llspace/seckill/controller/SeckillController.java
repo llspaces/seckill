@@ -169,6 +169,7 @@ public class SeckillController implements InitializingBean{
         }
         for(GoodsVO goodsVO : goodsVOList){
             redisService.set(GoodsRedisKeyPrefix.getSeckillGoodsStock, "" + goodsVO.getId(), goodsVO.getStockCount());
+            seckillOverMap.put(goodsVO.getId(), false);
         }
     }
 }
