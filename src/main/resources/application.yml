@@ -42,6 +42,25 @@ spring:
     enabled: true
     encoding: UTF-8
     mode: HTML
+  rabbitmq:
+    host: 192.168.11.30
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 10
+        prefetch: 1
+        auto-startup: true
+        default-requeue-rejected: true
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        multiplier: 1.0
 # mybatis
 mybatis:
   type-aliases-package: com.llspace.seckill.entity
@@ -53,4 +72,18 @@ mapper:
   identity: MYSQL
   before: false
   not-empty: true
+#static
+resources:
+  add-mappings: true
+  cache-period: 3600
+  static-locations: classpath:/static/
+  chain:
+    cache: true
+    enabled: true
+    gzipped: true
+    html-application-cache: true
+#启动时控制台打印生效的API信息
+logging:
+  level:
+    org.springframework.web: TRACE
 

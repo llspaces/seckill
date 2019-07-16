@@ -16,4 +16,8 @@ public class GoodsRedisKeyPrefix extends BaseRedisKeyPrefix{
     }
 
     public static GoodsRedisKeyPrefix getGoodsList = new GoodsRedisKeyPrefix(60, "goods_list");
+
+    public static GoodsRedisKeyPrefix getSeckillGoodsStock = new GoodsRedisKeyPrefix(60, "seckill_goods_stock");
+
+    public static GoodsRedisKeyPrefix isGoodsSeckillOver = new GoodsRedisKeyPrefix(0, "is_goods_seckill_over");
 }

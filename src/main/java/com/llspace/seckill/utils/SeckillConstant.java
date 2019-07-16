@@ -18,6 +18,8 @@ public class SeckillConstant {
     public static final String MD5_SALT = "1a2b3c4d";
     //error path
     public static final String ERROR_PATH = "/error";
+    //消息队列名称
+    public static final String QUEUE_NAME = "seckill_queue";
 
 
 }
