@@ -4,6 +4,7 @@ import com.llspace.seckill.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  * @since 2019/6/20 11:13
  **/
-@Service
+@Component
 public class RedisService {
 
     @Autowired

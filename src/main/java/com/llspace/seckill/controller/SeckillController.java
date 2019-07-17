@@ -17,11 +17,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +57,12 @@ public class SeckillController implements InitializingBean{
     @Autowired
     private MQSender mqSender;
 
-    @PostMapping("/do_seckill")
+    @PostMapping("/{path}/do_seckill")
     @ResponseBody
-    public Result<Integer> seckill(Model model, User user, long goodsId){
+    public Result<Integer> seckill(Model model, User user, long goodsId, @PathVariable("path")String path){
         //系统初始化时秒杀商品库存已初始化至redis（implements InitializingBean Override afterPropertiesSet()）
-
+        //check path
+        boolean flag = seckillService.checkPath(user.getId(), goodsId, path);
         //内存标记，减少redis访问
         if(seckillOverMap.get(goodsId)){
             //商品已经秒杀完
@@ -88,6 +90,33 @@ public class SeckillController implements InitializingBean{
         seckillMessage.setUser(user);
         mqSender.sendSeckillMessage(seckillMessage);
         return Result.success(0);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getSeckillPath")
+    public Result<String> getSeckillPath(Model model, User user, long goodsId, @RequestParam(value="verifyCode", defaultValue="0")int verifyCode){
+        boolean check = seckillService.checkVerifyCode(user, goodsId, verifyCode);
+        if(!check) {
+            return Result.error(CodeMsg.SECKILL_VERIFYCODE_ERROR);
+        }
+        String path = seckillService.createPath(user.getId(),goodsId);
+        return Result.success(path);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/verifyCode")
+    public Result<String> verifyCode(HttpServletResponse response,User user, long goodsId){
+        try {
+            BufferedImage image  = seckillService.createVerifyCode(user, goodsId);
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(image, "JPEG", out);
+            out.flush();
+            out.close();
+            return null;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return Result.error(CodeMsg.SECKILL_FAIL);
+        }
     }
 
     /**

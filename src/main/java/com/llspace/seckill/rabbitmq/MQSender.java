@@ -6,6 +6,7 @@ import com.llspace.seckill.utils.SeckillConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  * @since 2019/7/12 14:45
  **/
-@Service
+@Component
 @Slf4j
 public class MQSender {
 

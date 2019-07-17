@@ -9,6 +9,7 @@ import com.llspace.seckill.utils.SeckillConstant;
 import com.llspace.seckill.utils.UserContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -26,7 +27,7 @@ import java.io.OutputStream;
  * @version 1.0
  * @since 2019/6/21 10:34
  **/
-@Service
+@Component
 public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired

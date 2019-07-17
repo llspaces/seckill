@@ -5,6 +5,7 @@ import com.llspace.seckill.service.UserService;
 import com.llspace.seckill.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -20,7 +21,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @version 1.0
  * @since 2019/6/21 14:31
  **/
-@Service
+@Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver{
 
     @Autowired
